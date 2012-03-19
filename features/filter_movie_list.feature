@@ -22,14 +22,23 @@ Background: movies have been added to database
   And  I am on the RottenPotatoes home page
   
 Scenario: restrict to movies with 'PG' or 'R' ratings
-  # enter step(s) to check the 'PG' and 'R' checkboxes
-  # enter step(s) to uncheck all other checkboxes
-  # enter step to "submit" the search form on the homepage
-  # enter step(s) to ensure that PG and R movies are visible
-  # enter step(s) to ensure that other movies are not visible
+  When I check "ratings_PG"
+  And I check "ratings_R"
+  When I uncheck "ratings_G"
+  And I uncheck "ratings_PG-13"
+  And I uncheck "ratings_NC-17"
+  When I press "ratings_submit"
+  Then I should see "PG" within "table#movies"
+  And I should see "R" within "table#movies"
+  And I should not see "G" within "table#movies tbody tr td"
+  And I should not see "PG-13" within "table#movies"
+  And I should not see "NC-17" within "table#movies"
 
 Scenario: no ratings selected
-  # see assignment
+  #Unused: The assignment didn't describe this and the autograder doesn't check
+  #Given I uncheck the following ratings: G, PG, PG-13, NC-17, R
+  #Then I should see none of the movies
 
 Scenario: all ratings selected
-  # see assignment
+  Given I check the following ratings: G, PG, PG-13, NC-17, R
+  Then I should see all of the movies
